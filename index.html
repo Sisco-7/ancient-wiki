@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ancient Wiki | Unlocking Ancient Knowledge</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root {
+            /* Day Mode (Default) */
+            --primary: #4A3C8D; /* Mystic Purple */
+            --secondary: #F4A261; /* Golden Hue */
+            --accent: #64B5F6; /* Celestial Blue */
+            --background: #F9E4B7; /* Parchment Light */
+            --text-light: #1A1B3A; /* Dark Slate */
+            --text-dark: #1A1B3A; /* Dark Slate */
+            --glass: rgba(255, 255, 255, 0.3);
+            --glass-hover: rgba(255, 255, 255, 0.5);
+            --shadow: rgba(0, 0, 0, 0.2);
+            --glow: rgba(244, 162, 97, 0.7);
+        }
+
+        [data-theme="night"] {
+            /* Night Mode */
+            --primary: #2B2D6F; /* Cosmic Indigo */
+            --secondary: #F4A261; /* Golden Hue */
+            --accent: #64B5F6; /* Celestial Blue */
+            --background: #0B0C1E; /* Night Sky */
+            --text-light: #F9E4B7; /* Parchment Glow */
+            --text-dark: #1A1B3A; /* Dark Slate */
+            --glass: rgba(255, 255, 255, 0.08);
+            --glass-hover: rgba(255, 255, 255, 0.15);
+            --shadow: rgba(0, 0, 0, 0.4);
+            --glow: rgba(244, 162, 97, 0.7);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            font-family: 'Cinzel', 'Inter', serif;
+            background: var(--background);
+            color: var(--text-light);
+            overflow-x: hidden;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .cosmic-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at center, rgba(100, 181, 246, 0.2) 0%, var(--background) 70%);
+            overflow: hidden;
+        }
+
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            background: var(--text-light);
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: twinkle 10s infinite linear;
+        }
+
+        @keyframes twinkle {
+            0% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.6; }
+        }
+
+        .mode-toggle {
+            position: fixed;
+            top: 40px;
+            left: 20px;
+            z-index: 1001;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 2px solid var(--secondary);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .mode-toggle:hover {
+            background: var(--secondary);
+            transform: scale(1.1);
+        }
+
+        .mode-toggle i {
+            font-size: 1.5rem;
+            color: var(--text-light);
+        }
+
+        .main-container {
+            position: relative;
+            z-index: 1;
+            padding-bottom: 80px;
+            width: 100%;
+            max-width: 100%;
+            overflow: visible;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 140px 20px 60px;
+            position: relative;
+        }
+
+        .hero-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(3rem, 8vw, 5rem);
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--text-light), var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            0% { filter: drop-shadow(0 0 10px rgba(244, 162, 97, 0.6)); }
+            100% { filter: drop-shadow(0 0 25px rgba(100, 181, 246, 0.9)); }
+        }
+
+        .hero-subtitle {
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
+            opacity: 0.9;
+            margin-bottom: 30px;
+            animation: fadeInUp 1s ease 0.5s both;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            width: 100%;
+            box-sizing: border-box;
+            overflow: visible;
+        }
+
+        .section {
+            margin-bottom: 80px;
+        }
+
+        .section-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(2rem, 5vw, 2.5rem);
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .knowledge-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .knowledge-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 2px solid var(--accent);
+            border-radius: 20px;
+            padding: 30px;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 8px 30px var(--shadow);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .knowledge-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+            border-color: var(--secondary);
+        }
+
+        .knowledge-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .knowledge-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .knowledge-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .knowledge-icon {
+            font-size: 2.2rem;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px var(--glow);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .knowledge-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        .knowledge-description {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-light);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .knowledge-link {
+            display: inline-block;
+            margin-top: 10px;
+            color: var(--secondary);
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .knowledge-link:hover {
+            color: var(--text-light);
+            transform: translateX(5px);
+        }
+
+        .detail-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            z-index: 1002;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .detail-container {
+            background: linear-gradient(135deg, var(--glass), rgba(100, 181, 246, 0.1));
+            border: 2px solid var(--secondary);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 900px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 8px 30px var(--shadow);
+            position: relative;
+            color: var(--text-light);
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .detail-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 24px;
+            text-align: center;
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .detail-content {
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(0.9rem, 2vw, 1rem);
+            line-height: 1.8;
+            color: var(--text-light);
+        }
+
+        .detail-section {
+            margin-bottom: 32px;
+            padding: 16px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            transition: background 0.3s ease;
+        }
+
+        .detail-section:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .detail-subheader {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.3rem, 3vw, 1.6rem);
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .detail-subheader::after {
+            content: '';
+            width: 50px;
+            height: 2px;
+            background: var(--secondary);
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            border-radius: 1px;
+        }
+
+        .detail-list {
+            list-style-type: none;
+            padding-left: 20px;
+        }
+
+        .detail-list li {
+            position: relative;
+            margin-bottom: 12px;
+            padding-left: 20px;
+            font-size: clamp(0.85rem, 2vw, 0.95rem);
+            line-height: 1.7;
+            transition: color 0.3s ease;
+        }
+
+        .detail-list li:hover {
+            color: var(--secondary);
+        }
+
+        .detail-list li::before {
+            content: '–';
+            position: absolute;
+            left: 0;
+            color: var(--secondary);
+            font-weight: 700;
+        }
+
+        .detail-list li strong {
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        .close-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            color: var(--text-light);
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-top: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .close-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px var(--glow);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .social-link {
+            font-size: 2rem;
+            color: var(--text-light);
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            color: var(--secondary);
+            transform: scale(1.2);
+        }
+
+        footer {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border-top: 2px solid var(--secondary);
+            padding: 20px;
+            text-align: center;
+            color: var(--text-light);
+            font-size: 0.95rem;
+            margin-top: 40px;
+        }
+
+        footer a {
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: var(--text-light);
+        }
+
+        @media (max-width: 1024px) {
+            .hero {
+                padding: 120px 15px 50px;
+            }
+
+            .hero-title {
+                font-size: clamp(2.5rem, 6vw, 4rem);
+            }
+
+            .knowledge-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 20px;
+            }
+
+            .detail-container {
+                padding: 30px;
+                max-width: 700px;
+                max-height: 85vh;
+            }
+
+            .detail-title {
+                font-size: clamp(1.6rem, 4vw, 2rem);
+            }
+
+            .detail-subheader {
+                font-size: clamp(1.2rem, 3vw, 1.4rem);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 100px 15px 40px;
+            }
+
+            .hero-title {
+                font-size: clamp(2rem, 5vw, 3.5rem);
+            }
+
+            .section-title {
+                font-size: clamp(1.8rem, 4vw, 2rem);
+            }
+
+            .detail-container {
+                padding: 20px;
+                max-width: 90%;
+                max-height: 90vh;
+            }
+
+            .detail-title {
+                font-size: clamp(1.4rem, 4vw, 1.8rem);
+            }
+
+            .detail-subheader {
+                font-size: clamp(1.1rem, 3vw, 1.3rem);
+            }
+
+            .main-container {
+                padding-bottom: 80px;
+            }
+
+            footer {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .knowledge-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .knowledge-card {
+                padding: 20px;
+            }
+
+            .knowledge-title {
+                font-size: 1.4rem;
+            }
+
+            .detail-container {
+                padding: 16px;
+                max-width: 95%;
+            }
+
+            .detail-title {
+                font-size: clamp(1.2rem, 3.5vw, 1.6rem);
+            }
+
+            .detail-subheader {
+                font-size: clamp(1rem, 2.5vw, 1.2rem);
+            }
+
+            .detail-content {
+                font-size: clamp(0.8rem, 2vw, 0.9rem);
+            }
+
+            .close-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+
+            .social-link {
+                font-size: 1.8rem;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in-up {
+            opacity: 1;
+            transform: translateY(0);
+            animation: none;
+        }
+    </style>
+</head>
+<body data-theme="day">
+    <div class="cosmic-background">
+        <div class="stars" id="stars"></div>
+    </div>
+
+    <div class="mode-toggle" onclick="toggleTheme()">
+        <i class="fas fa-sun"></i>
+    </div>
+
+    <div class="main-container">
+        <section class="hero">
+            <h1 class="hero-title">Ancient Wiki</h1>
+            <p class="hero-subtitle">Unlock the Secrets of Ancient Knowledge</p>
+        </section>
+
+        <div class="container">
+            <section class="section" id="knowledge">
+                <h2 class="section-title">Explore Ancient Wisdom</h2>
+                <div class="knowledge-grid">
+                    <div class="knowledge-card fade-in-up" data-knowledge="numerology">
+                        <div class="knowledge-header">
+                            <div class="knowledge-icon"><i class="fas fa-calculator"></i></div>
+                            <h3 class="knowledge-title">Numerology</h3>
+                        </div>
+                        <div class="knowledge-content">
+                            <p class="knowledge-description">Discover the mystical vibrations of numbers shaping your destiny, from Life Path to Angel Numbers.</p>
+                            <a href="#" class="knowledge-link" onclick="toggleDetail('numerology')">Learn More</a>
+                        </div>
+                    </div>
+                    <div class="knowledge-card fade-in-up" data-knowledge="astrology">
+                        <div class="knowledge-header">
+                            <div class="knowledge-icon"><i class="fas fa-star"></i></div>
+                            <h3 class="knowledge-title">Astrology</h3>
+                        </div>
+                        <div class="knowledge-content">
+                            <p class="knowledge-description">Map your cosmic blueprint with zodiac signs, natal charts, and planetary influences.</p>
+                            <a href="#" class="knowledge-link" onclick="toggleDetail('astrology')">Learn More</a>
+                        </div>
+                    </div>
+                    <div class="knowledge-card fade-in-up" data-knowledge="sacred-geometry">
+                        <div class="knowledge-header">
+                            <div class="knowledge-icon"><i class="fas fa-shapes"></i></div>
+                            <h3 class="knowledge-title">Sacred Geometry</h3>
+                        </div>
+                        <div class="knowledge-content">
+                            <p class="knowledge-description">Unveil the divine patterns of creation, from the Flower of Life to the Golden Ratio.</p>
+                            <a href="#" class="knowledge-link" onclick="toggleDetail('sacred-geometry')">Learn More</a>
+                        </div>
+                    </div>
+                    <div class="knowledge-card fade-in-up" data-knowledge="hermeticism">
+                        <div class="knowledge-header">
+                            <div class="knowledge-icon"><i class="fas fa-book"></i></div>
+                            <h3 class="knowledge-title">Hermeticism</h3>
+                        </div>
+                        <div class="knowledge-content">
+                            <p class="knowledge-description">Explore the seven principles of Hermes Trismegistus, like As above, so below.</p>
+                            <a href="#" class="knowledge-link" onclick="toggleDetail('hermeticism')">Learn More</a>
+                        </div>
+                    </div>
+                    <div class="knowledge-card fade-in-up" data-knowledge="alchemy">
+                        <div class="knowledge-header">
+                            <div class="knowledge-icon"><i class="fas fa-flask"></i></div>
+                            <h3 class="knowledge-title">Alchemy</h3>
+                        </div>
+                        <div class="knowledge-content">
+                            <p class="knowledge-description">Transform your soul and reality through the stages of the Great Work.</p>
+                            <a href="#" class="knowledge-link" onclick="toggleDetail('alchemy')">Learn More</a>
+                        </div>
+                    </div>
+                    <div class="knowledge-card fade-in-up" data-knowledge="chakras">
+                        <div class="knowledge-header">
+                            <div class="knowledge-icon"><i class="fas fa-circle-notch"></i></div>
+                            <h3 class="knowledge-title">Chakras</h3>
+                        </div>
+                        <div class="knowledge-content">
+                            <p class="knowledge-description">Balance your seven energy centers for physical, emotional, and spiritual harmony.</p>
+                            <a href="#" class="knowledge-link" onclick="toggleDetail('chakras')">Learn More</a>
+                        </div>
+                    </div>
+                    <div class="knowledge-card fade-in-up" data-knowledge="kabbalah">
+                        <div class="knowledge-header">
+                            <div class="knowledge-icon"><i class="fas fa-tree"></i></div>
+                            <h3 class="knowledge-title">Kabbalah</h3>
+                        </div>
+                        <div class="knowledge-content">
+                            <p class="knowledge-description">Navigate the Tree of Life to understand the divine and your soul's journey.</p>
+                            <a href="#" class="knowledge-link" onclick="toggleDetail('kabbalah')">Learn More</a>
+                        </div>
+                    </div>
+                    <div class="knowledge-card fade-in-up" data-knowledge="taoism">
+                        <div class="knowledge-header">
+                            <div class="knowledge-icon"><i class="fas fa-yin-yang"></i></div>
+                            <h3 class="knowledge-title">Taoism</h3>
+                        </div>
+                        <div class="knowledge-content">
+                            <p class="knowledge-description">Flow with the Tao, balancing Yin and Yang through the I Ching and Qi.</p>
+                            <a href="#" class="knowledge-link" onclick="toggleDetail('taoism')">Learn More</a>
+                        </div>
+                    </div>
+                    <div class="knowledge-card fade-in-up" data-knowledge="tarot">
+                        <div class="knowledge-header">
+                            <div class="knowledge-icon"><i class="fas fa-book-open"></i></div>
+                            <h3 class="knowledge-title">Tarot</h3>
+                        </div>
+                        <div class="knowledge-content">
+                            <p class="knowledge-description">Reflect on life's journey with the symbolic wisdom of the Major and Minor Arcana.</p>
+                            <a href="#" class="knowledge-link" onclick="toggleDetail('tarot')">Learn More</a>
+                        </div>
+                    </div>
+                    <div class="knowledge-card fade-in-up" data-knowledge="ancient-mysteries">
+                        <div class="knowledge-header">
+                            <div class="knowledge-icon"><i class="fas fa-pyramid"></i></div>
+                            <h3 class="knowledge-title">Ancient Mysteries</h3>
+                        </div>
+                        <div class="knowledge-content">
+                            <p class="knowledge-description">Uncover secrets of Atlantis, Egypt, Sumeria, and Mayan cosmic cycles.</p>
+                            <a href="#" class="knowledge-link" onclick="toggleDetail('ancient-mysteries')">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section" id="explore">
+                <h2 class="section-title">Start Your Journey</h2>
+                <div class="knowledge-card fade-in-up">
+                    <p class="knowledge-description text-center mb-6">
+                        Dive into the wisdom of the ancients. Explore articles, meditations, and tools to unlock your potential and connect with the cosmos.
+                    </p>
+                    <div class="text-center">
+                        <button class="close-btn">Begin Exploration</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section" id="connect">
+                <h2 class="section-title">Connect with Ancient Wiki</h2>
+                <div class="knowledge-card fade-in-up">
+                    <p class="knowledge-description text-center mb-6">Join our community and stay updated with cosmic wisdom.</p>
+                    <div class="social-links">
+                        <a href="https://tiktok.com/@sisqoasq" target="_blank" class="social-link" title="TikTok"><i class="fab fa-tiktok"></i></a>
+                        <a href="https://wa.me/+2348128197651" target="_blank" class="social-link" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                        <a href="tel:+2349119502147" class="social-link" title="Phone"><i class="fas fa-phone"></i></a>
+                        <a href="mailto:siscoask@gmail.com" class="social-link" title="Gmail"><i class="fas fa-envelope"></i></a>
+                        <a href="https://x.com/SiscoAsk" target="_blank" class="social-link" title="X"><i class="fab fa-x-twitter"></i></a>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div class="detail-overlay" id="detailOverlay">
+            <div class="detail-container">
+                <h3 class="detail-title" id="detailTitle"></h3>
+                <div class="detail-content" id="detailContent"></div>
+                <button class="close-btn" onclick="closeDetail()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        Built with cosmic curiosity by <a href="https://wa.me/+2348128197651" target="_blank">Sisco Ask</a>| © 2025
+    </footer>
+
+    <script>
+        const knowledgeDetails = {
+            numerology: {
+                title: "Numerology: The Vibrational Code of Existence",
+                content: `
+                    <div class="detail-section">
+                        <h4 class="detail-subheader">Essence</h4>
+                        <p>Numerology is an ancient metaphysical science that interprets numbers as carriers of vibrational energy, influencing individual destinies and universal patterns. Originating in ancient Mesopotamia around 3000 BCE and systematized by Pythagoras around 570 to 490 BCE, it posits that numbers are not mere quantities but archetypal forces that encode spiritual truths, guiding personal growth and cosmic understanding.</p>
+                    </div>
+                    <div class="detail-section">
+                        <h4 class="detail-subheader">Key Concepts</h4>
+                        <ul class="detail-list">
+                            <li><strong>Life Path Number</strong>: Derived by summing the digits of one's birth date and reducing to a single digit or Master Number, for example, 07/08/1990: 0+7+0+8+1+9+9+0 = 34, 3+4 = 7. Each number from 1 to 9 has distinct traits: 1 represents leadership, 7 signifies introspection, and 9 embodies humanitarianism. It reveals one's core purpose and challenges.</li>
+                            <li><strong>Expression and Soul Urge Numbers</strong>: Calculated from the numerical values of a name's letters, where A=1, B=2, up to Z=26. The Expression Number reflects talents and life expression, while the Soul Urge, using vowels only, uncovers inner desires and motivations, offering a dual lens on external and internal identity.</li>
+                            <li><strong>Master Numbers</strong>: Numbers 11, 22, and 33 are not reduced, symbolizing heightened spiritual potential. Number 11, the Intuitive Master, amplifies psychic sensitivity, 22, the Master Builder, denotes practical vision, and 33, the Master Teacher, embodies universal compassion. These numbers carry intense challenges and rewards.</li>
+                            <li><strong>Angel Numbers</strong>: Repeating sequences, such as 111, 444, or 777, are considered divine messages. For instance, 111 signals new beginnings and alignment, 444 indicates protection and stability, and 777 suggests spiritual awakening. These are rooted in mystical traditions like Kabbalistic Gematria.</li>
+                            <li><strong>Chaldean vs. Pythagorean Systems</strong>: Chaldean numerology, from ancient Babylon, emphasizes vibrational essences and uses a 1 to 8 scale, while Pythagorean numerology, more analytical, includes 9. Both systems assign numbers to letters but differ in interpretation depth and application.</li>
+                        </ul>
+                    </div>
+                    <div class="detail-section">
+                        <h4 class="detail-subheader">How to Learn/Apply</h4>
+                        <ul class="detail-list">
+                            <li>Calculate your Life Path Number manually or use tools like those on numerology.com. Reflect on its meaning, for example, Life Path 5 equals freedom and change, and journal how it manifests in your life choices.</li>
+                            <li>Compute Expression and Soul Urge Numbers using your full birth name. Compare these to your Life Path to understand conflicts or synergies between your purpose and desires.</li>
+                            <li>Track Angel Numbers over a month, noting their appearance, for example, on clocks or receipts, and context, such as during stress or decisions. Research their meanings in texts like Sacred Scribes by Joanne Walmsley.</li>
+                            <li>Study Pythagoras' Tetractys, a triangular arrangement of 10 points, to grasp numbers as cosmic principles. Read The Secret Teachings of All Ages by Manly P. Hall for historical context.</li>
+                            <li>Apply numerology practically: choose dates for events, for example, a wedding on a 6 day for harmony, or analyze your address number for energetic insights.</li>
+                        </ul>
+                    </div>
+                    <div class="detail-section">
+                        <h4 class="detail-subheader">Connection</h4>
+                        <p>Numerology intersects with sacred geometry through numerical patterns like the Fibonacci sequence, with astrology via planetary correspondences, for example, Sun = 1, Moon = 2, and with Kabbalah through Gematria, where Hebrew letters' numerical values reveal hidden meanings. Its emphasis on vibration aligns with Hermeticism's principle of Vibration and Taoism's concept of Qi.</p>
+                    </div>
+                `
+            },
+            astrology: {
+                title: "Astrology: Mapping the Celestial Influence",
+                content: `
+                    <div class="detail-section">
+                        <h4 class="detail-subheader">Essence</h4>
+                        <p>Astrology, originating in Mesopotamia around 3000 BCE and developed across Egypt, India, and Greece, is the study of celestial bodies' influence on human affairs. It interprets the positions of planets, stars, and constellations at one's birth to reveal personality, destiny, and life events, viewing the cosmos as a mirror of the human soul.</p>
+                    </div>
+                    <div class="detail-section">
+                        <h4 class="detail-subheader">Key Concepts</h4>
+                        <ul class="detail-list">
+                            <li><strong>Zodiac Signs</strong>: The ecliptic is divided into 12 signs from Aries to Pisces, each tied to elemental qualities, such as Fire, Earth, Air, or Water, and modalities, such as Cardinal, Fixed, or Mutable. For example, Leo, a Fire and Fixed sign, embodies leadership and creativity, while Virgo, an Earth and Mutable sign, focuses on precision and service.</li>
+                            <li><strong>Natal Chart</strong>: A snapshot of the sky at birth, plotting Sun, Moon, planets, and Ascendant across 12 houses, for example, 1st house represents self, 7th represents partnerships. Aspects, such as conjunctions or squares, show planetary interactions, for example, Sun square Mars indicates inner conflict but dynamic energy.</li>
+                            <li><strong>Vedic vs. Western</strong>: Western astrology uses the tropical zodiac, aligned with seasons, while Vedic, or Jyotish, uses the sidereal zodiac, aligned with constellations, differing by approximately 23 degrees due to precession. Vedic emphasizes karma and dasha periods, or planetary cycles.</li>
+                            <li><strong>Planetary Influences</strong>: Each planet governs specific energies: Sun for identity, Moon for emotions, Mercury for communication, Venus for love, Mars for action, Jupiter for expansion, Saturn for discipline. Outer planets, like Uranus, Neptune, and Pluto, influence generational trends.</li>
+                            <li><strong>Transits and Progressions</strong>: Current planetary movements, or transits, affect daily life, for example, Mercury retrograde disrupts communication. Progressed charts show personal evolution, for example, progressed Moon shifts emotional focus every 2.5 years.</li>
+                        </ul>
+                    </div>
+                    <div class="detail-section">
+                        <h4 class="detail-subheader">How to Learn/Apply</h4>
+                        <ul class="detail-list">
+                            <li>Generate your natal chart using Astro.com or apps like TimePassages. Study your Sun, Moon, and Rising signs to understand your core identity, emotions, and outward persona.</li>
+                            <li>Explore house placements, for example, Venus in 5th house equals romantic creativity, and aspects, for example, Moon trine Jupiter equals emotional optimism, to identify strengths and challenges.</li>
+                            <li>Learn Vedic astrology through texts like Light on Life by Hart de Fouw for karmic insights or compare with Chinese astrology's elemental cycles, such as Wood, Fire, Earth, Metal, Water.</li>
+                            <li>Track transits using an ephemeris or apps to anticipate energies, for example, avoid signing contracts during Mercury retrograde. Journal how transits correlate with life events.</li>
+                            <li>Study Hellenistic astrology, for example, On the Heavenly Spheres by Helena Avelar, for ancient techniques like lots, such as Lot of Fortune, to deepen chart interpretation.</li>
+                        </ul>
+                    </div>
+                    <div class="detail-section">
+                        <h4 class="detail-subheader">Connection</h4>
+                        <p>Astrology connects to numerology through planetary correspondences, for example, Jupiter = 3, to Tarot via archetypal alignments, for example, The Emperor = Aries, and to Kabbalah through cosmic structures like the Sefirot. Its cyclical nature resonates with Taoism's rhythms and sacred geometry's celestial alignments.</p>
+                    </div>
+                `
+            },
+            'sacred-geometry': {
+                title: "Sacred Geometry: The Divine Architecture of Existence",
+                content: `
+                    <div class="detail-section">
+                        <h4 class="detail-subheader">Essence</h4>
+                        <p>Sacred geometry perceives geometric forms as the foundational language of the universe, encoding divine principles in nature, architecture, and consciousness. Found in ancient structures like Egypt's pyramids around 2700 BCE and Hindu mandalas, it reveals the harmony between the material and spiritual realms.</p>
+                    </div>
+                    <div class="detail-section">
+                        <h4 class="detail-subheader">Key Concepts</h4>
+                        <ul class="detail-list">
+                            <li><strong>Flower of Life</strong>: A pattern of 19 interlocking circles, found in Egypt's Temple of Osiris and Chinese temples, symbolizing the interconnectedness of all life. It contains the Seed of Life, seven circles, representing creation's stages.</li>
+                            <li><strong>Golden Ratio (Phi, 1.618)</strong>: A proportion governing aesthetics in nature, for example, nautilus shells, human proportions, and architecture, such as the Parthenon or Notre-Dame. It creates visual harmony and spiritual resonance.</li>
+                            <li><strong>Fibonacci Sequence</strong>: A series, such as 0, 1, 1, 2, 3, 5, 8, where each number is the sum of the two preceding ones, mirroring spirals in galaxies, sunflowers, and DNA. It approximates the Golden Ratio as numbers increase.</li>
+                            <li><strong>Platonic Solids</strong>: Five polyhedra, tetrahedron, cube, octahedron, dodecahedron, icosahedron, associated with elements, for example, tetrahedron equals fire. Plato linked them to cosmic order, used in ancient Greek and Vedic cosmologies.</li>
+                            <li><strong>Metatron's Cube</strong>: Derived from the Flower of Life, this complex figure contains all Platonic Solids, symbolizing the blueprint of creation. Named after the archangel Metatron in mystical traditions, it's used in meditation.</li>
+                        </ul>
+                    </div>
+                    <div class="detail-section">
+                        <h4 class="detail-subheader">How to Learn/Apply</h4>
+                        <ul class="detail-list">
+                            <li>Draw the Flower of Life using a compass and paper to internalize its symmetry. Meditate on it to access creative or spiritual insights, focusing on its interlocking circles.</li>
+                            <li>Study the Golden Ratio in art, for example, Leonardo da Vinci's Vitruvian Man, or architecture, such as Giza pyramids' proportions. Apply it in design projects for aesthetic balance.</li>
+                            <li>Observe Fibonacci patterns in nature, for example, pinecone scales, spiral galaxies, to deepen your connection to the cosmos. Calculate Fibonacci numbers to understand their mathematical beauty.</li>
+                            <li>Explore Platonic Solids through 3D models or visualizations, available online or in books like Sacred Geometry by Robert Lawlor. Meditate on their elemental correspondences.</li>
+                            <li>Visit ancient sites, for example, Stonehenge or Chichen Itza, or study their blueprints to see sacred geometry in action. Analyze alignments with stars or solstices.</li>
+                        </ul>
+                    </div>
+                    <div class="detail-section">
+                        <h4 class="detail-subheader">Connection</h4>
+                        <p>Sacred geometry underpins numerology through numbers as geometric patterns, astrology via planetary orbits as geometric cycles, and ancient mysteries, for example, pyramid alignments with Orion. It aligns with Hermeticism's Correspondence principle and alchemy's transformative patterns.</p>
+                    </div>
+                `
+            },
+            hermeticism: {
+                title: "Hermeticism: The Universal Principles of Reality",
+                content: `
+                    <div class="detail-section">
+                        <h4 class="detail-subheader">Essence</h4>
+                        <p>Hermeticism, rooted in the teachings of Hermes Trismegistus, a syncretic figure combining Egypt's Thoth and Greece's Hermes around 300 BCE, is a philosophical system that articulates universal laws governing mind, matter, and spirit. Its core text, The Kybalion from 1908, codifies seven principles that explain the nature of existence and guide spiritual transformation.</p>
+                    </div>
+                    <div class="detail-section">
+                        <h4 class="detail-subheader">Key Concepts</h4>
+                        <ul class="detail-list">
+                            <li><strong>Mentalism</strong>: The All is Mind; the Universe is Mental. Reality is a manifestation of a universal consciousness, and thoughts shape existence, aligning with modern ideas of manifestation.</li>
+                            <li><strong>Correspondence</strong>: As above, so below; as below, so above. Patterns in the cosmos, or macrocosm, reflect those in the individual, or microcosm, enabling insights through analogy.</li>
+                            <li><strong>Vibration</strong>: Everything is in constant motion, vibrating at unique frequencies. Higher vibrations, for example, love or clarity, elevate consciousness, while lower ones, like fear, limit it.</li>
+                            <li><strong>Polarity</strong>: All opposites, such as hot/cold or light/dark, are extremes of the same spectrum, reconcilable through balance. This principle underpins duality in many traditions.</li>
+                            <li><strong>Rhythm</strong>: Life operates in cycles, for example, birth/death or expansion/contraction. Understanding rhythm allows one to navigate life's ebbs and flows.</li>
+                            <li><strong>Cause and Effect</strong>: Every action produces a reaction, governing karma and intentionality. Conscious choices shape outcomes.</li>
+                            <li><strong>Gender</strong>: All things embody masculine, active, and feminine, receptive, energies, creating balance in creation and human dynamics.</li>
+                        </ul>
+                    </div>
+                    <div class="detail-section">
+                        <h4 class="detail-subheader">How to Learn/Apply</h4>
+                        <ul class="detail-list">
+                            <li>Read The Kybalion by Three Initiates for a concise introduction to the seven principles. Supplement with The Corpus Hermeticum for original texts.</li>
+                            <li>Practice Mentalism by visualizing goals daily, focusing on clarity and intention to shape outcomes, for example, career success or emotional healing.</li>
+                            <li>Apply Correspondence by journaling parallels between personal experiences and global events, for example, how personal growth mirrors societal shifts.</li>
+                            <li>Raise your vibration through meditation, gratitude practices, or sound therapy, for example, 432 Hz frequencies. Avoid low-vibration states like anger or fear.</li>
+                            <li>Study Polarity by identifying opposites in your life, for example, confidence/doubt, and finding their middle ground through mindfulness or dialogue.</li>
+                        </ul>
+                    </div>
+                    <div class="detail-section">
+                        <h4 class="detail-subheader">Connection</h4>
+                        <p>Hermeticism's principles influence alchemy through transformation as a mental process, Kabbalah via Correspondence in the Tree of Life, and Taoism through balance of opposites. Its focus on vibration ties to numerology and chakras, while Mentalism resonates with modern metaphysical practices.</p>
+                    </div>
+                `
+            },
+            alchemy: {
+                title: "Alchemy: The Art of Transmutation",
+                content: `
+                    <div class="detail-section">
+                        <h4 class="detail-subheader">Essence</h4>
+                        <p>Alchemy, originating in Hellenistic Egypt around 200 BCE and practiced in China, India, and medieval Europe, is both a proto-scientific and spiritual discipline aiming to transmute base materials, such as lead into gold, and the self from ignorance to enlightenment. It seeks the Philosopher's Stone, a symbol of ultimate wisdom and unity with the divine.</p>
+                    </div>
+                    <div class="detail-section">
+                        <h4 class="detail-subheader">Key Concepts</h4>
+                        <ul class="detail-list">
+                            <li><strong>Magnum Opus</strong>: The Great Work, a four-stage process: Nigredo, or blackening, confronting shadow; Albedo, or whitening, purification; Citrinitas, or yellowing, spiritual awakening; Rubedo, or reddening, integration. Each stage transforms the alchemist's psyche and spirit.</li>
+                            <li><strong>Philosopher's Stone</strong>: A mythical substance granting immortality or enlightenment. Symbolically, it represents the perfected self, achieved through inner work.</li>
+                            <li><strong>Elements and Correspondences</strong>: Alchemists worked with four elements, Earth, Water, Air, Fire, linked to stages and chakras, for example, Nigredo equals Earth/Root chakra. Sulphur for soul, Mercury for spirit, and Salt for body are key alchemical principles.</li>
+                            <li><strong>Historical Practices</strong>: Egyptian alchemists, like Zosimos of Panopolis, developed metallurgy, while Chinese alchemy focused on elixirs for immortality. Medieval Europe blended alchemy with Christian mysticism.</li>
+                        </ul>
+                    </div>
+                    <div class="detail-section">
+                        <h4 class="detail-subheader">How to Learn/Apply</h4>
+                        <ul class="detail-list">
+                            <li>Study The Emerald Tablet, attributed to Hermes Trismegistus, for alchemical axioms like That which is below is like that which is above.</li>
+                            <li>Practice Nigredo by journaling your fears, traumas, or shadow aspects. Use shadow work techniques from Jungian psychology to integrate them.</li>
+                            <li>Engage in Albedo through meditation or visualization, cleansing negative patterns. Practice forgiveness or gratitude to purify emotions.</li>
+                            <li>Explore Citrinitas by studying spiritual texts, for example, The Secret of the Golden Flower for Chinese alchemy, to awaken higher consciousness.</li>
+                            <li>Apply Rubedo by living your insights, integrating lessons into daily life, for example, embodying compassion or purpose. Explore Ayurveda or herbalism for practical alchemy.</li>
+                        </ul>
+                    </div>
+                    <div class="detail-section">
+                        <h4 class="detail-subheader">Connection</h4>
+                        <p>Alchemy aligns with chakras through stages as energy centers, Hermeticism via principles like Correspondence, and sacred geometry through patterns of transformation. Its spiritual focus connects to Kabbalah's pursuit of divine union and Taoism's inner balance.</p>
+                    </div>
+                `
+            },
+            chakras: {
+                title: "Chakra System: The Energetic Framework of Being",
+                content: `
+                    <div class="detail-section">
+                        <h4 class="detail-subheader">Essence</h4>
+                        <p>The chakra system, originating in ancient India's Vedic texts around 1500 BCE, describes seven energy centers along the spine that regulate physical, emotional, and spiritual well-being. Each chakra governs specific aspects of life, and their balance is essential for holistic health and enlightenment.</p>
+                    </div>
+                    <div class="detail-section">
+                        <h4 class="detail-subheader">Key Concepts</h4>
+                        <ul class="detail-list">
+                            <li><strong>Root (Muladhara)</strong>: Located at the spine's base, it governs survival, security, and grounding. Imbalances manifest as fear or financial instability.</li>
+                            <li><strong>Sacral (Svadhisthana)</strong>: In the lower abdomen, it controls creativity, pleasure, and emotions. Blockages cause creative stagnation or relationship issues.</li>
+                            <li><strong>Solar Plexus (Manipura)</strong>: Near the stomach, it rules confidence, power, and identity. Weakness leads to low self-esteem or control issues.</li>
+                            <li><strong>Heart (Anahata)</strong>: At the chest, it governs love, compassion, and connection. Imbalances result in isolation or over-giving.</li>
+                            <li><strong>Throat (Vishuddha)</strong>: At the throat, it controls expression and truth. Blockages cause communication difficulties or dishonesty.</li>
+                            <li><strong>Third Eye (Ajna)</strong>: Between the eyes, it rules intuition and insight. Imbalances lead to confusion or lack of clarity.</li>
+                            <li><strong>Crown (Sahasrara)</strong>: At the head's top, it connects to divinity and universal consciousness. Blockages result in spiritual disconnection.</li>
+                        </ul>
+                    </div>
+                    <div class="detail-section">
+                        <h4 class="detail-subheader">How to Learn/Apply</h4>
+                        <ul class="detail-list">
+                            <li>Meditate on each chakra, visualizing its color, for example, red for Root, violet for Crown, and chanting its mantra, such as LAM for Root, OM for Crown. Use guided meditations on platforms like Insight Timer.</li>
+                            <li>Practice yoga poses: Warrior I for Root, Cobra for Heart, or Child's Pose for Third Eye. Study The Yoga Sutras by Patanjali for context.</li>
+                            <li>Assess imbalances by journaling symptoms, for example, anxiety equals Root, creative block equals Sacral. Address them with targeted practices, such as grounding walks for Root.</li>
+                            <li>Use crystals, for example, red jasper for Root, amethyst for Crown, or essential oils, like sandalwood for Third Eye, to enhance chakra work.</li>
+                            <li>Study Tantric texts like the Upanishads or Chakra: Key to Spiritual Opening by Anodea Judith for deeper insights into energy flow.</li>
+                        </ul>
+                    </div>
+                    <div class="detail-section">
+                        <h4 class="detail-subheader">Connection</h4>
+                        <p>Chakras align with alchemy's stages, for example, Nigredo equals Root, Taoism's Qi flow, and Vedic astrology's energetic cycles. Their focus on energy centers resonates with Hermeticism's Vibration principle and sacred geometry's patterns.</p>
+                    </div>
+                `
+            },
+            kabbalah: {
+                title: "Kabbalah: The Mystical Map of Divinity",
+                content: `
+                    <div class="detail-section">
+                        <h4 class="detail-subheader">Essence</h4>
+                        <p>Kabbalah, a Jewish mystical tradition dating to 12th-century Europe but rooted in earlier texts like the Sefer Yetzirah around 200 CE, explores the nature of God, creation, and the soul through the Tree of Life. It seeks to understand the divine structure and humanity's role within it, offering a path to spiritual ascent.</p>
+                    </div>
+                    <div class="detail-section">
+                        <h4 class="detail-subheader">Key Concepts</h4>
+                        <ul class="detail-list">
+                            <li><strong>Tree of Life</strong>: Comprises 10 Sefirot, divine attributes like Keter for Crown, Chokhmah for Wisdom, Binah for Understanding, and 22 paths, corresponding to Hebrew letters and Tarot's Major Arcana. It maps the flow of divine energy from infinite, Ein Sof, to creation.</li>
+                            <li><strong>Gematria</strong>: A system assigning numerical values to Hebrew letters to uncover hidden meanings in texts, for example, chai equals life equals 18. It reveals esoteric connections in scripture.</li>
+                            <li><strong>Four Worlds</strong>: Kabbalah describes reality in four levels: Atziluth for divine emanation, Briah for creation, Yetzirah for formation, Assiah for action. Each Sefirah exists across these worlds.</li>
+                            <li><strong>Tikkun Olam</strong>: The concept of repairing the world through spiritual and ethical actions, aligning human deeds with divine purpose.</li>
+                        </ul>
+                    </div>
+                    <div class="detail-section">
+                        <h4 class="detail-subheader">How to Learn/Apply</h4>
+                        <ul class="detail-list">
+                            <li>Study the Zohar with commentaries like those by Daniel Matt or Sefer Yetzirah with Aryeh Kaplan's translation for foundational insights.</li>
+                            <li>Meditate on a Sefirah, for example, Chesed equals loving-kindness, by visualizing its qualities and journaling how they manifest in your life.</li>
+                            <li>Practice Gematria by calculating the numerical value of your Hebrew name or transliterated English name to explore its spiritual significance.</li>
+                            <li>Engage in Tikkun Olam through acts of kindness or community service, reflecting on their cosmic impact.</li>
+                            <li>Study the Tree of Life's paths using Tarot correspondences, for example, The Fool equals Aleph, to deepen your understanding of its structure.</li>
+                        </ul>
+                    </div>
+                    <div class="detail-section">
+                        <h4 class="detail-subheader">Connection</h4>
+                        <p>Kabbalah's numerical mysticism, Gematria, ties to numerology, its archetypal paths align with Tarot's Major Arcana, and its cosmic structure resonates with Hermeticism's Correspondence. The Tree of Life connects to sacred geometry's patterns and astrology's divine order.</p>
+                    </div>
+                `
+            },
+           taoism: {
+                title: "Taoism: Harmonizing with the Cosmic Flow",
+                content: `
+                    <div class="detail-section">
+                        <h4 class="detail-subheader">Essence</h4>
+                        <p>Taoism, founded in ancient China around 500 BCE by Lao Tzu, is a philosophy and spiritual practice centered on living in harmony with the Tao, the ineffable source of all existence. It emphasizes balance, simplicity, and alignment with natural rhythms, integrating physical and metaphysical practices.</p>
+                    </div>
+                    <div class="detail-section">
+                        <h4 class="detail-subheader">Key Concepts</h4>
+                        <ul class="detail-list">
+                            <li><strong>Tao</strong>: The Way, an unnameable force underlying all creation, neither good nor evil, but the source of all dualities.</li>
+                            <li><strong>Yin and Yang</strong>: Complementary opposites, for example, dark/light, passive/active, that create balance. Their interplay forms the Taiji symbol, representing dynamic harmony.</li>
+                            <li><strong>Qi</strong>: The vital energy flowing through all beings and the cosmos, cultivated through practices like Qigong or Tai Chi.</li>
+                            <li><strong>I Ching</strong>: The Book of Changes, an oracle using 64 hexagrams, combinations of broken and unbroken lines, to offer guidance on life's decisions, rooted in divinatory traditions.</li>
+                            <li><strong>Wu Wei</strong>: The principle of non-action or effortless action, acting in alignment with the Tao's natural flow rather than forcing outcomes.</li>
+                        </ul>
+                    </div>
+                    <div class="detail-section">
+                        <h4 class="detail-subheader">How to Learn/Apply</h4>
+                        <ul class="detail-list">
+                            <li>Read Tao Te Ching by Lao Tzu, Stephen Mitchell's translation for accessibility, to grasp the Tao's poetic wisdom.</li>
+                            <li>Practice Tai Chi or Qigong daily, using online classes or books like The Way of Qigong by Kenneth Cohen, to cultivate Qi and physical balance.</li>
+                            <li>Consult the I Ching for guidance using coin-tossing methods or apps. Reflect on hexagram meanings, for example, Hexagram 1 equals creative power, for decisions.</li>
+                            <li>Apply Wu Wei by observing when to act or let go in daily life, for example, avoiding overcontrol in relationships. Journal outcomes to refine this skill.</li>
+                            <li>Study Chinese cosmology, for example, Five Elements: Wood, Fire, Earth, Metal, Water, to understand Taoist cycles and their application to health and environment.</li>
+                        </ul>
+                    </div>
+                    <div class="detail-section">
+                        <h4 class="detail-subheader">Connection</h4>
+                        <p>Taoism's balance of Yin and Yang aligns with Hermeticism's Polarity, its Qi flow connects to chakras, and its cyclical view resonates with astrology's transits. The I Ching's numerical patterns tie to numerology, and its natural harmony reflects sacred geometry.</p>
+                    </div>
+                `
+            },
+            tarot: {
+                title: "Tarot: The Symbolic Mirror of the Soul",
+                content: `
+                    <div class="detail-section">
+                        <h4 class="detail-subheader">Essence</h4>
+                        <p>Tarot, emerging in 15th-century Europe but rooted in earlier symbolic traditions, such as Egyptian and Kabbalistic, is a deck of 78 cards used for divination, self-reflection, and spiritual insight. It maps the human journey through archetypes, offering guidance on life's challenges and potentials.</p>
+                    </div>
+                    <div class="detail-section">
+                        <h4 class="detail-subheader">Key Concepts</h4>
+                        <ul class="detail-list">
+                            <li><strong>Major Arcana</strong>: 22 cards representing major life themes and spiritual lessons, for example, The Fool equals new beginnings, The Tower equals sudden change, The World equals completion. Each card is a universal archetype.</li>
+                            <li><strong>Minor Arcana</strong>: 56 cards divided into four suits: Cups for emotions, Wands for action/creativity, Swords for intellect, Pentacles for material. Each suit spans Ace to King, detailing daily experiences.</li>
+                            <li><strong>Spreads</strong>: Layouts like the Celtic Cross, 10 cards, or Three-Card Spread, past, present, future, structure readings to answer specific questions or explore life phases.</li>
+                            <li><strong>Reversals</strong>: Cards drawn upside-down carry modified meanings, often indicating blocks, delays, or internalized energies, for example, reversed Strength equals self-doubt.</li>
+                        </ul>
+                    </div>
+                    <div class="detail-section">
+                        <h4 class="detail-subheader">How to Learn/Apply</h4>
+                        <ul class="detail-list">
+                            <li>Acquire a Rider-Waite Tarot deck for its clear symbolism. Study card meanings using The Pictorial Key to the Tarot by A.E. Waite.</li>
+                            <li>Practice daily single-card pulls to reflect on immediate energies, for example, The Star equals hope, suggesting optimism. Journal interpretations and outcomes.</li>
+                            <li>Learn the Celtic Cross spread for in-depth readings. Practice on personal questions, for example, career path, and compare upright vs. reversed meanings.</li>
+                            <li>Study Tarot's correspondences with Kabbalah, for example, The Magician equals Beth, 2nd path, and astrology, for example, The Empress equals Venus, to deepen insights.</li>
+                            <li>Develop intuition by meditating on a card's imagery before consulting guidebooks, allowing personal interpretations to emerge.</li>
+                        </ul>
+                    </div>
+                    <div class="detail-section">
+                        <h4 class="detail-subheader">Connection</h4>
+                        <p>Tarot's Major Arcana aligns with Kabbalah's 22 paths, its numerical structure ties to numerology, and its planetary associations connect to astrology. Its archetypal nature resonates with Hermeticism's Mentalism and sacred geometry's symbolic patterns.</p>
+                    </div>
+                `
+            },
+            'ancient-mysteries': {
+                title: "Ancient Mysteries: The Lost Wisdom of Civilizations",
+                content: `
+                    <div class="detail-section">
+                        <h4 class="detail-subheader">Essence</h4>
+                        <p>Ancient mysteries encompass the enigmatic knowledge and technologies of lost or advanced civilizations like Atlantis, ancient Egypt, Sumeria, and the Maya. These cultures, spanning 9600 BCE with Gobekli Tepe to 1500 CE in Mesoamerica, suggest advanced spiritual, astronomical, and possibly technological insights, preserved in myths and archaeology.</p>
+                    </div>
+                    <div class="detail-section">
+                        <h4 class="detail-subheader">Key Concepts</h4>
+                        <ul class="detail-list">
+                            <li><strong>Atlantis</strong>: Described by Plato around 360 BCE in Timaeus and Critias, Atlantis was an advanced island civilization possibly destroyed by a cataclysm around 9600 BCE. Theories link it to Minoan Crete or a metaphor for hubris.</li>
+                            <li><strong>Ancient Egypt</strong>: The pyramids of Giza around 2600 BCE align with Orion's Belt, suggesting astronomical knowledge. The Dendera Zodiac and Hermetic texts hint at spiritual technologies.</li>
+                            <li><strong>Sumeria</strong>: The earliest known writing, cuneiform around 3000 BCE, and myths of the Anunnaki, sky gods, suggest advanced cosmology. The Enuma Elish describes creation aligned with celestial cycles.</li>
+                            <li><strong>Maya/Aztec</strong>: The Mayan Tzolkin, a 260-day calendar, and Long Count track cosmic cycles with precision. Structures like Chichen Itza align with equinoxes, reflecting deep astronomical knowledge.</li>
+                            <li><strong>Gobekli Tepe</strong>: A 9600 BCE site in Turkey with T-shaped pillars, predating Stonehenge, suggesting early ritualistic astronomy and social organization.</li>
+                        </ul>
+                    </div>
+                    <div class="detail-section">
+                        <h4 class="detail-subheader">How to Learn/Apply</h4>
+                        <ul class="detail-list">
+                            <li>Read Plato's Timaeus and Critias to explore Atlantis narratives. Cross-reference with archaeological studies of Santorini or the Bahamas for possible locations.</li>
+                            <li>Study Egyptian texts like the Pyramid Texts or Book of the Dead for spiritual insights. Visit or analyze Giza's alignments using star-mapping software like Stellarium.</li>
+                            <li>Explore Sumerian myths in The Epic of Gilgamesh or Enuma Elish. Research cuneiform tablets, for example, British Museum archives, for Anunnaki references.</li>
+                            <li>Learn the Mayan calendar through The Mayan Oracle by Spilsbury and Bryner. Apply its cycles to personal planning, for example, Tzolkin's 20-day periods for intention-setting.</li>
+                            <li>Investigate Gobekli Tepe via archaeological reports, such as Klaus Schmidt's work, or documentaries. Reflect on its implications for early human spirituality.</li>
+                        </ul>
+                    </div>
+                    <div class="detail-section">
+                        <h4 class="detail-subheader">Connection</h4>
+                        <p>Ancient mysteries connect to astrology through celestial alignments, sacred geometry via architectural precision, and alchemy through spiritual technologies. Their myths resonate with Hermeticism's Correspondence and Kabbalah's divine structure.</p>
+                    </div>
+                `
+            }
+        };
+
+        function initializeApp() {
+            createStars();
+            setupEventListeners();
+            document.querySelectorAll('.knowledge-card, .section-title').forEach(el => {
+                el.classList.add('fade-in-up');
+            });
+        }
+
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.width = `${Math.random() * 2 + 1}px`;
+                star.style.height = star.style.width;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.animationDuration = `${Math.random() * 8 + 5}s`;
+                star.style.animationDelay = `${Math.random() * 5}s`;
+                starsContainer.appendChild(star);
+            }
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const currentTheme = body.getAttribute('data-theme');
+            const toggleIcon = document.querySelector('.mode-toggle i');
+            if (currentTheme === 'day') {
+                body.setAttribute('data-theme', 'night');
+                toggleIcon.classList.remove('fa-sun');
+                toggleIcon.classList.add('fa-moon');
+            } else {
+                body.setAttribute('data-theme', 'day');
+                toggleIcon.classList.remove('fa-moon');
+                toggleIcon.classList.add('fa-sun');
+            }
+        }
+
+        function toggleDetail(knowledge) {
+            const overlay = document.getElementById('detailOverlay');
+            const title = document.getElementById('detailTitle');
+            const content = document.getElementById('detailContent');
+            const details = knowledgeDetails[knowledge];
+
+            if (details) {
+                title.textContent = details.title;
+                content.innerHTML = details.content;
+                overlay.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeDetail() {
+            const overlay = document.getElementById('detailOverlay');
+            overlay.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+
+        function setupEventListeners() {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+                    item.classList.add('active');
+                    const section = document.getElementById(item.dataset.section);
+                    if (section) {
+                        section.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+
+            if ('ontouchstart' in window) {
+                document.querySelectorAll('.close-btn, .social-link, .knowledge-card, .mode-toggle').forEach(element => {
+                    element.addEventListener('touchstart', function(e) {
+                        e.stopPropagation();
+                        this.style.transform = 'scale(0.95)';
+                    });
+                    element.addEventListener('touchend', function(e) {
+                        e.stopPropagation();
+                        this.style.transform = '';
+                    });
+                });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', initializeApp);
+    </script>
+</body>
+</html>
